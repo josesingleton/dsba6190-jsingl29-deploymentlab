@@ -24,7 +24,7 @@ resource "random_integer" "deployment_id_suffix" {
 // Resource Group
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-${var.class_name}-${var.student_name}-eastus-${var.environment}-${random_integer.deployment_id_suffix.result}"
+  name     = "rg-${var.class_name}-${var.student_name}-${random_integer.deployment_id_suffix.result}"
   location = var.location
 
   tags = local.tags
@@ -34,7 +34,7 @@ resource "azurerm_resource_group" "rg" {
 // Virtual Network
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "vnet-${var.class_name}-${var.student_name}-${var.environment}-${random_integer.deployment_id_suffix.result}"
+  name                = "vnet-${var.class_name}-${var.student_name}-${random_integer.deployment_id_suffix.result}"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
