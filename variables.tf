@@ -26,6 +26,7 @@ variable "location" {
 }
 
 
+
 // Azure-Specific App Variables
 
 variable "environment" {
