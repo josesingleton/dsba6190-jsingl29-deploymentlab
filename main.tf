@@ -14,6 +14,7 @@ locals {
 # data "azurerm_subscription" "current" {
 # }
 
+
 // Random Suffix Generator
 
 resource "random_integer" "deployment_id_suffix" {
