@@ -90,7 +90,7 @@ resource "azurerm_storage_account" "storage" {
     ip_rules                   = ["100.0.0.1"]
     virtual_network_subnet_ids = [azurerm_subnet.subnet.id]
   }
-\
+
 
   tags = local.tags
 }
