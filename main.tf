@@ -14,7 +14,6 @@ locals {
 # data "azurerm_subscription" "current" {
 # }
 
-
 // Random Suffix Generator
 
 resource "random_integer" "deployment_id_suffix" {
@@ -25,7 +24,7 @@ resource "random_integer" "deployment_id_suffix" {
 // Resource Group
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-${var.class_name}-${var.student_name}-${random_integer.deployment_id_suffix.result}"
+  name     = "rg-${var.class_name}-${var.student_name}"
   location = var.location
 
   tags = local.tags
@@ -35,14 +34,14 @@ resource "azurerm_resource_group" "rg" {
 // Virtual Network
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "vnet-${var.class_name}-${var.student_name}-${random_integer.deployment_id_suffix.result}"
+  name                = "vnet-${var.student_name}"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_subnet" "subnet" {
-  name                 = "subnet-${var.class_name}-${var.student_name}-${random_integer.deployment_id_suffix.result}"
+  name                 = "subnet-${var.class_name}-${var.student_name}"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.2.0/24"]
@@ -52,7 +51,7 @@ resource "azurerm_subnet" "subnet" {
 // SQL Server
 
 resource "azurerm_mssql_server" "sql" {
-  name                         = "sql-${var.class_name}-${var.student_name}-${var.environment}-${random_integer.deployment_id_suffix.result}"
+  name                         = "sql-${var.class_name}-${var.student_name}"
   resource_group_name          = azurerm_resource_group.rg.name
   location                     = azurerm_resource_group.rg.location
   version                      = "12.0"
@@ -69,7 +68,7 @@ resource "azurerm_mssql_virtual_network_rule" "vnetrule" {
 // SQL Database
 
 resource "azurerm_mssql_database" "db" {
-  name        = "db-${var.class_name}-${var.student_name}-${var.environment}-${random_integer.deployment_id_suffix.result}"
+  name        = "db-${var.class_name}-${var.student_name}"
   server_id   = azurerm_mssql_server.sql.id
   collation   = "SQL_Latin1_General_CP1_CI_AS"
   max_size_gb = 1
@@ -80,7 +79,7 @@ resource "azurerm_mssql_database" "db" {
 // Storage Account
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "sto${var.class_name}${var.student_name}${var.environment}${random_integer.deployment_id_suffix.result}"
+  name                     = "sto${var.class_name}${var.student_name}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
@@ -91,7 +90,6 @@ resource "azurerm_storage_account" "storage" {
     ip_rules                   = ["100.0.0.1"]
     virtual_network_subnet_ids = [azurerm_subnet.subnet.id]
   }
-
 
   tags = local.tags
 }
